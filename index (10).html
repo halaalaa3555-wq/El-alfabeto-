@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>الحروف العربية — Clases de Letras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#fff7ed;
+    --bg-2:#fde68a;
+    --bg-3:#fbcfe8;
+    --bg-4:#bae6fd;
+    --ink:#1f2937;
+    --ink-soft:#4b5563;
+    --accent:#ea580c;
+    --accent-2:#16a34a;
+    --accent-3:#7c3aed;
+    --card:#ffffffcc;
+    --shadow:0 20px 40px -20px rgba(124,58,237,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;font-family:'Quicksand',system-ui,sans-serif;color:var(--ink);background:linear-gradient(135deg,var(--bg-1),var(--bg-2) 40%,var(--bg-3) 70%,var(--bg-4));min-height:100vh;background-attachment:fixed}
+  body::before{content:"";position:fixed;inset:0;background-image:radial-gradient(circle at 20% 10%, rgba(255,255,255,.5), transparent 40%), radial-gradient(circle at 80% 30%, rgba(255,255,255,.4), transparent 40%);pointer-events:none;z-index:0}
+  .wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:48px 22px 80px;direction:rtl}
+  header.hero{text-align:center;margin-bottom:42px;direction:rtl}
+  .badge{display:inline-block;background:linear-gradient(135deg,#fcd34d,#f472b6);color:#7c2d12;padding:6px 18px;border-radius:999px;font-weight:700;font-size:13px;letter-spacing:.5px;box-shadow:0 6px 16px -6px rgba(244,114,182,.6);margin-bottom:18px}
+  h1{font-family:'Amiri',serif;font-size:clamp(38px,6vw,64px);margin:0 0 10px;color:var(--ink);line-height:1.1}
+  h1 .ar{color:var(--accent);font-weight:700}
+  .subtitle{font-size:clamp(15px,2vw,18px);color:var(--ink-soft);max-width:640px;margin:0 auto;line-height:1.6;text-align:right;direction:rtl}
+
+  .alphabet-bar{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(64px,1fr));
+    grid-auto-flow:row dense;
+    gap:10px;
+    background:rgba(255,255,255,.55);
+    backdrop-filter:blur(10px);
+    padding:20px;
+    border-radius:24px;
+    box-shadow:var(--shadow);
+    margin-bottom:48px;
+    border:1px solid rgba(255,255,255,.7);
+    direction:rtl;
+  }
+  .alphabet-bar button{
+    font-family:'Amiri',serif;
+    font-size:26px;
+    width:64px;height:64px;
+    border-radius:16px;
+    border:2px solid transparent;
+    background:#fff;
+    cursor:pointer;
+    transition:all .25s ease;
+    color:var(--ink);
+    font-weight:700;
+    box-shadow:0 2px 6px rgba(0,0,0,.06);
+    justify-self:center;
+  }
+  .alphabet-bar button:hover{transform:translateY(-3px) rotate(-3deg);border-color:var(--accent-3);color:var(--accent-3)}
+  .alphabet-bar button.active{background:linear-gradient(135deg,var(--accent),var(--accent-3));color:#fff;border-color:transparent;transform:scale(1.1);box-shadow:0 8px 18px -6px rgba(124,58,237,.6)}
+
+  .class-section{margin-bottom:60px}
+  .class-header{background:linear-gradient(135deg,rgba(255,255,255,.85),rgba(255,255,255,.5));backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.8);border-radius:24px;padding:24px 28px;margin-bottom:24px;box-shadow:var(--shadow);display:flex;align-items:center;gap:18px;flex-wrap:wrap;flex-direction:row-reverse;text-align:right}
+  .class-num{width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,var(--accent),var(--accent-3));color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;box-shadow:0 10px 24px -8px rgba(234,88,12,.55);flex-shrink:0}
+  .class-title h2{margin:0 0 4px;font-size:24px;color:var(--ink);text-align:right}
+  .class-title p{margin:0;color:var(--ink-soft);font-size:14px;line-height:1.5;text-align:right}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;direction:rtl}
+  .card{background:var(--card);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.85);border-radius:24px;padding:24px;box-shadow:var(--shadow);transition:all .35s ease;position:relative;overflow:hidden;cursor:pointer;direction:rtl}
+  .card::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(252,211,77,.25),transparent 60%);opacity:0;transition:opacity .4s}
+  .card:hover{transform:translateY(-6px);box-shadow:0 28px 50px -20px rgba(124,58,237,.5)}
+  .card:hover::before{opacity:1}
+
+  .letter-display{text-align:center;margin-bottom:16px;position:relative}
+  .letter-big{font-family:'Amiri',serif;font-size:96px;line-height:1;color:var(--accent);font-weight:700;text-shadow:0 6px 0 rgba(234,88,12,.08);transition:transform .3s}
+  .card:hover .letter-big{transform:scale(1.08) rotate(-2deg)}
+  .letter-forms{display:flex;justify-content:center;align-items:end;gap:14px;margin-top:8px;padding-top:14px;border-top:1px dashed rgba(124,58,237,.3)}
+  .letter-forms .form{text-align:center}
+  .letter-forms .form span{display:block;font-family:'Amiri',serif;font-size:30px;color:var(--ink);line-height:1}
+  .letter-forms .form small{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:1px;margin-top:2px;display:block}
+
+  .card-info h3{margin:0 0 4px;font-size:22px;color:var(--ink);font-family:'Amiri',serif;text-align:right}
+  .card-info .translit{color:var(--accent-3);font-weight:600;font-size:13px;letter-spacing:.5px;display:block;text-align:right}
+  .card-info p{margin:10px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.6;text-align:right}
+
+  .story{background:rgba(252,211,77,.18);border-right:4px solid #f59e0b;padding:12px 14px;border-radius:12px 0 0 12px;margin-top:12px;font-size:13.5px;color:#78350f;line-height:1.6;text-align:right}
+  .story strong{color:#9a3412}
+
+  .actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;flex-direction:row-reverse;justify-content:flex-start}
+  .btn-audio{background:linear-gradient(135deg,var(--accent-2),#0d9488);color:#fff;border:none;padding:9px 14px;border-radius:10px;font-weight:600;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:transform .2s,box-shadow .2s}
+  .btn-audio:hover{transform:translateY(-2px);box-shadow:0 8px 18px -6px rgba(22,163,74,.5)}
+
+  .nav-bottom{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.85);backdrop-filter:blur(14px);padding:10px 18px;border-radius:999px;box-shadow:0 12px 30px -10px rgba(0,0,0,.25);display:flex;flex-direction:row;gap:8px;align-items:center;z-index:10;border:1px solid rgba(255,255,255,.8);max-width:90vw;overflow-x:auto}
+  .nav-bottom button{background:transparent;border:1px solid transparent;width:36px;height:36px;border-radius:50%;cursor:pointer;font-family:'Amiri',serif;font-size:18px;color:var(--ink);transition:all .2s;flex-shrink:0}
+  .nav-bottom button:hover{background:var(--accent);color:#fff}
+  .nav-bottom .arrow{width:32px;height:32px;background:var(--ink);color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center}
+  .nav-bottom .arrow:hover{background:var(--accent)}
+
+  footer{text-align:center;margin-top:60px;color:var(--ink-soft);font-size:13px;direction:ltr}
+
+  @media (max-width:600px){
+    .letter-big{font-size:80px}
+    .class-header{padding:18px}
+    .class-num{width:52px;height:52px;font-size:22px;border-radius:16px}
+    h1{font-size:36px}
+    .alphabet-bar button{width:54px;height:54px;font-size:22px}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <span class="badge" dir="ltr">🌟 Aventura del Alfabeto Árabe 🌟</span>
+      <h1><span dir="ltr">Aprende las</span> <span class="ar">الحروف العربية</span></h1>
+      <p class="subtitle" dir="ltr">Una página interactiva y divertida con clases, historias y sonidos. Toca cualquier letra del alfabeto arriba para saltar a ella.</p>
+    </header>
+
+    <nav class="alphabet-bar" id="alphabetBar" aria-label="Alfabeto árabe"></nav>
+
+    <!-- ============== CLASE 1: Alif (única) ============== -->
+    <section class="class-section" id="class-unique">
+      <div class="class-header">
+        <div class="class-num">1</div>
+        <div class="class-title">
+          <h2><span dir="ltr">✨ Letra única —</span> <span style="font-family:'Amiri'">ألف</span></h2>
+          <p dir="ltr">Una letra alta y delgada que siempre está de pie. No se conecta con la siguiente letra. A veces lleva un sombrerito arriba.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-unique"></div>
+    </section>
+
+    <!-- ============== CLASE 2: Hermanas ب ت ث ============== -->
+    <section class="class-section" id="class-sisters-1">
+      <div class="class-header">
+        <div class="class-num">2</div>
+        <div class="class-title">
+          <h2><span dir="ltr">👭 Primer grupo de hermanas —</span> <span style="font-family:'Amiri'">ب ت ث</span></h2>
+          <p dir="ltr">Tienen la misma forma: una curva simple como una copita. Solo cambian las "manzanas" (puntos) que llevan.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-sisters-1"></div>
+    </section>
+
+    <!-- ============== CLASE 3: Hermanas ج ح خ ============== -->
+    <section class="class-section" id="class-sisters-2">
+      <div class="class-header">
+        <div class="class-num">3</div>
+        <div class="class-title">
+          <h2><span dir="ltr">👭 Segundo grupo de hermanas —</span> <span style="font-family:'Amiri'">ج ح خ</span></h2>
+          <p dir="ltr">Tienen una gran barriga con un sombrero arriba. Solo cambia lo que llevan encima o dentro.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-sisters-2"></div>
+    </section>
+
+    <!-- ============== CLASE 4: د ذ ر ز ============== -->
+    <section class="class-section" id="class-4">
+      <div class="class-header">
+        <div class="class-num">4</div>
+        <div class="class-title">
+          <h2><span dir="ltr">🪑 Las personitas sentadas —</span> <span style="font-family:'Amiri'">د ذ ر ز</span></h2>
+          <p dir="ltr">Parecen una persona pequeña sentada con la espalda recta. Son suaves y cortas. Solo cambia el número de puntos encima.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-4"></div>
+    </section>
+
+    <!-- ============== CLASE 5: س ش ============== -->
+    <section class="class-section" id="class-5">
+      <div class="class-header">
+        <div class="class-num">5</div>
+        <div class="class-title">
+          <h2><span dir="ltr">🦷 Las letras con dientes —</span> <span style="font-family:'Amiri'">س ش</span></h2>
+          <p dir="ltr">Tienen forma de tres dientes pequeños y un gran círculo incompleto (como una olla). Una lleva puntos encima, la otra no.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-5"></div>
+    </section>
+
+    <!-- ============== CLASE 6: ص ض ط ظ ============== -->
+    <section class="class-section" id="class-6">
+      <div class="class-header">
+        <div class="class-num">6</div>
+        <div class="class-title">
+          <h2><span dir="ltr">💪 Las letras enfáticas —</span> <span style="font-family:'Amiri'">ص ض ط ظ</span></h2>
+          <p dir="ltr">Letras con curvas anchas y círculos grandes. Son las versiones "pesadas" de otras letras. Llevan o no llevan un punto encima.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-6"></div>
+    </section>
+
+    <!-- ============== CLASE 7: ع غ ============== -->
+    <section class="class-section" id="class-7">
+      <div class="class-header">
+        <div class="class-num">7</div>
+        <div class="class-title">
+          <h2><span dir="ltr">🗣️ Las letras de la garganta —</span> <span style="font-family:'Amiri'">ع غ</span></h2>
+          <p dir="ltr">Parecen dos círculos (uno arriba y otro abajo). Una lleva un punto encima, la otra no.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-7"></div>
+    </section>
+
+    <!-- ============== CLASE 8: ف ق ك ============== -->
+    <section class="class-section" id="class-8">
+      <div class="class-header">
+        <div class="class-num">8</div>
+        <div class="class-title">
+          <h2><span dir="ltr">🥣 Las letras con cuenco —</span> <span style="font-family:'Amiri'">ف ق ك</span></h2>
+          <p dir="ltr">Tienen un círculo al inicio y un cuerpo (cuenco) sobre la línea. Llevan puntos encima en diferentes cantidades.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-8"></div>
+    </section>
+
+    <!-- ============== CLASE 9: ل م ن ============== -->
+    <section class="class-section" id="class-9">
+      <div class="class-header">
+        <div class="class-num">9</div>
+        <div class="class-title">
+          <h2><span dir="ltr">🥄 Las letras con forma de cuchara —</span> <span style="font-family:'Amiri'">ل م ن</span></h2>
+          <p dir="ltr">Letras con formas redondeadas, como cucharas u ollas. Cada una tiene una forma única.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-9"></div>
+    </section>
+
+    <!-- ============== CLASE 10: ه و ي ============== -->
+    <section class="class-section" id="class-10">
+      <div class="class-header">
+        <div class="class-num">10</div>
+        <div class="class-title">
+          <h2><span dir="ltr">🌬️ Las letras suaves —</span> <span style="font-family:'Amiri'">ه و ي</span></h2>
+          <p dir="ltr">Las últimas tres letras del alfabeto. Cada una tiene una forma única: boquita, coma y barquito.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-10"></div>
+    </section>
+
+    <footer dir="ltr">
+      Hecho con <span style="color:var(--accent);font-weight:700">♥</span> para pequeñas aprendices del árabe · 28 letras en orden
+    </footer>
+  </div>
+
+  <nav class="nav-bottom" id="navBottom">
+    <button class="arrow" id="nextLetter" title="Siguiente">▶</button>
+    <div id="navLetters" style="display:flex;gap:4px;flex-direction:row-reverse"></div>
+    <button class="arrow" id="prevLetter" title="Anterior">◀</button>
+  </nav>
+
+<script>
+/* ============================================================
+   28 LETRAS — DESCRIPCIONES DE FORMA (sin comparaciones de sonido)
+   ============================================================ */
+const LETTERS = [
+  // ---- 1) Alif (única) ----
+  {
+    ar:'ا', name:'Alif', order:1, group:'unique',
+    forms:{isolated:'ا',initial:'ا',medial:'ـا',final:'ـا'},
+    story:`<strong>Alif (ألف)</strong> es una línea vertical alta y delgada, como un palo parado. No tiene barriga ni manzanas. Cuando lleva un sombrerito arriba (أ) se llama Alif con Hamza.`
+  },
+  // ---- 2-4) Hermanas: ب ت ث ----
+  {
+    ar:'ب', name:'Bāʼ', order:2, group:'sisters-1',
+    forms:{isolated:'ب',initial:'ﺑ',medial:'ﺒ',final:'ﺐ'},
+    story:`<strong>Bā' (باء)</strong> tiene forma de <strong>copita</strong> con una <strong>manzana</strong> (un punto) <strong>debajo</strong> de la curva.`
+  },
+  {
+    ar:'ت', name:'Tāʼ', order:3, group:'sisters-1',
+    forms:{isolated:'ت',initial:'ﺗ',medial:'ﺘ',final:'ﺖ'},
+    story:`<strong>Tā' (تاء)</strong> tiene la misma copita que Bāʼ, pero lleva <strong>dos manzanas</strong> (dos puntos) <strong>encima</strong> de la curva.`
+  },
+  {
+    ar:'ث', name:'Thāʼ', order:4, group:'sisters-1',
+    forms:{isolated:'ث',initial:'ﺛ',medial:'ﺜ',final:'ﺚ'},
+    story:`<strong>Thā' (ثاء)</strong> tiene la misma copita, pero lleva <strong>tres manzanas</strong> (tres puntos) <strong>encima</strong> de la curva.`
+  },
+  // ---- 5-7) Hermanas: ج ح خ ----
+  {
+    ar:'ج', name:'Jīm', order:5, group:'sisters-2',
+    forms:{isolated:'ج',initial:'ﺟ',medial:'ﺠ',final:'ﺞ'},
+    story:`<strong>Jīm (جيم)</strong> tiene una <strong>gran barriga</strong> (un cuenco), un <strong>sombrero</strong> arriba, y una <strong>manzana dentro</strong> de la barriga.`
+  },
+  {
+    ar:'ح', name:'Ḥāʼ', order:6, group:'sisters-2',
+    forms:{isolated:'ح',initial:'ﺣ',medial:'ﺤ',final:'ﺢ'},
+    story:`<strong>Ḥāʼ (حاء)</strong> tiene la misma gran barriga con sombrero, pero <strong>no tiene ninguna manzana</strong> ni adentro ni encima. Está "hambrienta".`
+  },
+  {
+    ar:'خ', name:'Khāʼ', order:7, group:'sisters-2',
+    forms:{isolated:'خ',initial:'ﺧ',medial:'ﺨ',final:'ﺦ'},
+    story:`<strong>Khāʼ (خاء)</strong> tiene la gran barriga, el sombrero, <strong>y una manzana encima del sombrero</strong>.`
+  },
+  // ---- 8-11) Clase 4: Personitas sentadas ----
+  {
+    ar:'د', name:'Dāl', order:8,  group:'4',
+    forms:{isolated:'د',initial:'ﺩ',medial:'ﺪ',final:'ﺪ'},
+    story:`<strong>Dāl (دال)</strong> parece una persona pequeña sentada con la espalda recta. <strong>No tiene manzanas</strong> (puntos). Es una curva suave.`
+  },
+  {
+    ar:'ذ', name:'Dhāl', order:9,  group:'4',
+    forms:{isolated:'ذ',initial:'ﺫ',medial:'ﺬ',final:'ﺬ'},
+    story:`<strong>Dhāl (ذال)</strong> es igual que Dāl, pero lleva <strong>una manzana (un punto) encima</strong> de la curva.`
+  },
+  {
+    ar:'ر', name:'Rāʼ', order:10, group:'4',
+    forms:{isolated:'ر',initial:'ﺭ',medial:'ﺮ',final:'ﺮ'},
+    story:`<strong>Rā' (راء)</strong> tiene la forma sentada de Dāl, pero es <strong>más curva</strong> (la curva es más profunda). <strong>No tiene manzanas</strong>.`
+  },
+  {
+    ar:'ز', name:'Zāy', order:11, group:'4',
+    forms:{isolated:'ز',initial:'ﺯ',medial:'ﺰ',final:'ﺰ'},
+    story:`<strong>Zāy (زاي)</strong> es como Rā', curvada, pero lleva <strong>una manzana (un punto) encima</strong>.`
+  },
+  // ---- 12-13) Clase 5: Dientes ----
+  {
+    ar:'س', name:'Sīn', order:12, group:'5',
+    forms:{isolated:'س',initial:'ﺳ',medial:'ﺴ',final:'ﺲ'},
+    story:`<strong>Sīn (سين)</strong> parece una boca con <strong>tres dientes</strong> y un gran círculo incompleto (una olla). <strong>No lleva manzanas</strong>.`
+  },
+  {
+    ar:'ش', name:'Shīn', order:13, group:'5',
+    forms:{isolated:'ش',initial:'ﺷ',medial:'ﺸ',final:'ﺶ'},
+    story:`<strong>Shīn (شين)</strong> es igual que Sīn, con los tres dientes y la olla, pero lleva <strong>tres manzanas</strong> (tres puntos) <strong>encima</strong>.`
+  },
+  // ---- 14-17) Clase 6: Enfáticas ----
+  {
+    ar:'ص', name:'Ṣād', order:14, group:'6',
+    forms:{isolated:'ص',initial:'ﺻ',medial:'ﺼ',final:'ﺺ'},
+    story:`<strong>Ṣād (صاد)</strong> tiene una <strong>curva que sube hacia arriba</strong>, una <strong>línea recta</strong> y un <strong>círculo grande incompleto</strong> (como una olla). <strong>No lleva manzana</strong>.`
+  },
+  {
+    ar:'ض', name:'Ḍād', order:15, group:'6',
+    forms:{isolated:'ض',initial:'ﺿ',medial:'ﻀ',final:'ﺾ'},
+    story:`<strong>Ḍād (ضاد)</strong> es igual que Ṣād, con la curva que sube y el círculo grande, pero lleva <strong>una manzana (un punto) encima</strong>.`
+  },
+  {
+    ar:'ط', name:'Ṭāʼ', order:16, group:'6',
+    forms:{isolated:'ط',initial:'ﻃ',medial:'ﻄ',final:'ﻂ'},
+    story:`<strong>Ṭā' (طاء)</strong> es como Ṣād pero con un <strong>palo recto (palo) arriba</strong> de la curva. <strong>No lleva manzana</strong>.`
+  },
+  {
+    ar:'ظ', name:'Ẓāʼ', order:17, group:'6',
+    forms:{isolated:'ظ',initial:'ﻇ',medial:'ﻈ',final:'ﻆ'},
+    story:`<strong>Ẓā' (ظاء)</strong> es igual que Ṭā' con el palo arriba, pero lleva <strong>una manzana (un punto) encima</strong>.`
+  },
+  // ---- 18-19) Clase 7: Garganta ----
+  {
+    ar:'ع', name:'ʿAyn', order:18, group:'7',
+    forms:{isolated:'ع',initial:'ﻋ',medial:'ﻌ',final:'ﻊ'},
+    story:`<strong>ʿAyn (عين)</strong> tiene un <strong>círculo pequeño incompleto arriba</strong> y otro <strong>gran círculo incompleto abajo</strong>. <strong>No lleva manzana</strong>.`
+  },
+  {
+    ar:'غ', name:'Ghayn', order:19, group:'7',
+    forms:{isolated:'غ',initial:'ﻏ',medial:'ﻐ',final:'ﻎ'},
+    story:`<strong>Ghayn (غين)</strong> es como ʿAyn con sus dos círculos, pero lleva <strong>una manzana (un punto) encima</strong>.`
+  },
+  // ---- 20-22) Clase 8: Cuenco ----
+  {
+    ar:'ف', name:'Fāʼ', order:20, group:'8',
+    forms:{isolated:'ف',initial:'ﻓ',medial:'ﻔ',final:'ﻒ'},
+    story:`<strong>Fā' (فاء)</strong> tiene un <strong>círculo completo al inicio</strong> y un <strong>cuerpo plano sobre la línea</strong>. Lleva <strong>una manzana (un punto) encima</strong>.`
+  },
+  {
+    ar:'ق', name:'Qāf', order:21, group:'8',
+    forms:{isolated:'ق',initial:'ﻗ',medial:'ﻘ',final:'ﻖ'},
+    story:`<strong>Qāf (قاف)</strong> tiene un <strong>círculo completo al inicio</strong> y un <strong>gran círculo incompleto hondo</strong> (cuenco). Lleva <strong>dos manzanas</strong> (dos puntos) <strong>encima</strong>.`
+  },
+  {
+    ar:'ك', name:'Kāf', order:22, group:'8',
+    forms:{isolated:'ك',initial:'ﻛ',medial:'ﻜ',final:'ﻚ'},
+    story:`<strong>Kāf (كاف)</strong> parece una <strong>persona grande sentada con la espalda recta</strong>: una línea vertical con una base plana. No lleva puntos encima, pero a veces lleva una Hamza adentro.`
+  },
+  // ---- 23-25) Clase 9: Cuchara ----
+  {
+    ar:'ل', name:'Lām', order:23, group:'9',
+    forms:{isolated:'ل',initial:'ﻟ',medial:'ﻠ',final:'ﻞ'},
+    story:`<strong>Lām (لام)</strong> tiene una <strong>línea recta</strong> y un <strong>arco u olla</strong> (tazón) que sale desde abajo.`
+  },
+  {
+    ar:'م', name:'Mīm', order:24, group:'9',
+    forms:{isolated:'م',initial:'ﻣ',medial:'ﻤ',final:'ﻢ'},
+    story:`<strong>Mīm (ميم)</strong> tiene un <strong>círculo completo</strong>, un <strong>guión</strong> pequeño y una <strong>línea recta</strong> debajo. Parece un círculo con colita.`
+  },
+  {
+    ar:'ن', name:'Nūn', order:25, group:'9',
+    forms:{isolated:'ن',initial:'ﻧ',medial:'ﻨ',final:'ﻦ'},
+    story:`<strong>Nūn (نون)</strong> es como una <strong>olla honda</strong> (cuenco profundo) con una <strong>manzana (un punto) dentro</strong> de la olla.`
+  },
+  // ---- 26-28) Clase 10: Suaves ----
+  {
+    ar:'ه', name:'Hāʼ', order:26, group:'10',
+    forms:{isolated:'ﻫ',initial:'ﻫ',medial:'ﻬ',final:'ﻪ'},
+    story:`<strong>Hā' (هاء)</strong> parece una <strong>boquita pequeña y redonda</strong>, o un lazo. Es un círculo abierto con un palito.`
+  },
+  {
+    ar:'و', name:'Wāw', order:27, group:'10',
+    forms:{isolated:'و',initial:'ﻭ',medial:'ﻮ',final:'ﻮ'},
+    story:`<strong>Wāw (واو)</strong> tiene la forma de una <strong>coma</strong> (redondita con un palito que sale).`
+  },
+  {
+    ar:'ي', name:'Yāʼ', order:28, group:'10',
+    forms:{isolated:'ي',initial:'ﻳ',medial:'ﻴ',final:'ﻲ'},
+    story:`<strong>Yā' (ياء)</strong> parece un <strong>pequeño barco</strong> (o forma de patito) con <strong>dos manzanas</strong> (dos puntos) <strong>debajo</strong>.`
+  }
+];
+
+/* ============================================================
+   AGRUPAR Y RENDERIZAR
+   ============================================================ */
+const groupMap = {
+  'unique':'grid-unique',
+  'sisters-1':'grid-sisters-1',
+  'sisters-2':'grid-sisters-2',
+  '4':'grid-4',
+  '5':'grid-5',
+  '6':'grid-6',
+  '7':'grid-7',
+  '8':'grid-8',
+  '9':'grid-9',
+  '10':'grid-10'
+};
+
+function buildCard(letter){
+  return `
+    <article class="card" data-order="${letter.order}" data-ar="${letter.ar}" id="card-${letter.order}">
+      <div class="letter-display">
+        <div class="letter-big">${letter.ar}</div>
+        <div class="letter-forms">
+          <div class="form"><span>${letter.forms.isolated}</span><small>aislada</small></div>
+          <div class="form"><span>${letter.forms.initial}</span><small>inicial</small></div>
+          <div class="form"><span>${letter.forms.medial}</span><small>media</small></div>
+          <div class="form"><span>${letter.forms.final}</span><small>final</small></div>
+        </div>
+      </div>
+      <div class="card-info">
+        <h3>${letter.name}</h3>
+        <span class="translit">${letter.ar} · #${letter.order} / 28</span>
+        <div class="story">${letter.story}</div>
+        <div class="actions">
+          <button class="btn-audio" onclick="playAudio('${letter.ar}',event)">🔊 Escuchar sonido</button>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function render(){
+  Object.entries(groupMap).forEach(([g,elId])=>{
+    const el = document.getElementById(elId);
+    const items = LETTERS.filter(l=>l.group===g).sort((a,b)=>a.order-b.order);
+    el.innerHTML = items.map(buildCard).join('');
+  });
+
+  const bar = document.getElementById('alphabetBar');
+  bar.innerHTML = [...LETTERS]
+    .sort((a,b)=>a.order-b.order)
+    .map(l=>`<button data-target="${l.order}" title="${l.name}">${l.ar}</button>`)
+    .join('');
+
+  const nav = document.getElementById('navLetters');
+  nav.innerHTML = [...LETTERS]
+    .sort((a,b)=>a.order-b.order)
+    .map(l=>`<button data-target="${l.order}" title="${l.name}">${l.ar}</button>`)
+    .join('');
+
+  bar.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click',()=>scrollToLetter(parseInt(btn.dataset.target)));
+  });
+  nav.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click',()=>scrollToLetter(parseInt(btn.dataset.target)));
+  });
+}
+
+function scrollToLetter(order){
+  const card = document.getElementById('card-'+order);
+  if(!card){
+    window.scrollTo({top:0,behavior:'smooth'});
+    document.querySelectorAll('.alphabet-bar button, #navLetters button')
+      .forEach(b=>b.classList.toggle('active', parseInt(b.dataset.target)===order));
+    return;
+  }
+  document.querySelectorAll('.alphabet-bar button, #navLetters button')
+    .forEach(b=>b.classList.toggle('active', parseInt(b.dataset.target)===order));
+  card.scrollIntoView({behavior:'smooth',block:'center'});
+  card.style.transform='scale(1.04)';
+  setTimeout(()=>card.style.transform='',400);
+}
+
+function playAudio(text,e){
+  e.stopPropagation();
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ar-SA';
+  u.rate = 0.85;
+  u.pitch = 1;
+  window.speechSynthesis.speak(u);
+}
+
+let currentOrder = 1;
+document.getElementById('prevLetter').addEventListener('click',()=>{
+  if(currentOrder>1){currentOrder--;scrollToLetter(currentOrder)}
+});
+document.getElementById('nextLetter').addEventListener('click',()=>{
+  if(currentOrder<28){currentOrder++;scrollToLetter(currentOrder)}
+});
+
+render();
+</script>
+</body>
+</html>
