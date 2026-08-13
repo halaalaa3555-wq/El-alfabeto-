@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="es" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>الحروف العربية — Práctica de Formas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#fff7ed;
+    --bg-2:#fde68a;
+    --bg-3:#fbcfe8;
+    --bg-4:#bae6fd;
+    --ink:#1f2937;
+    --ink-soft:#4b5563;
+    --accent:#ea580c;
+    --accent-2:#16a34a;
+    --accent-3:#7c3aed;
+    --card:#ffffffcc;
+    --shadow:0 20px 40px -20px rgba(124,58,237,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;font-family:'Quicksand',system-ui,sans-serif;color:var(--ink);background:linear-gradient(135deg,var(--bg-1),var(--bg-2) 40%,var(--bg-3) 70%,var(--bg-4));min-height:100vh;background-attachment:fixed}
+  body::before{content:"";position:fixed;inset:0;background-image:radial-gradient(circle at 20% 10%, rgba(255,255,255,.5), transparent 40%), radial-gradient(circle at 80% 30%, rgba(255,255,255,.4), transparent 40%);pointer-events:none;z-index:0}
+  .wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:48px 22px 80px;direction:rtl}
+  header.hero{text-align:center;margin-bottom:42px;direction:rtl}
+  .badge{display:inline-block;background:linear-gradient(135deg,#fcd34d,#f472b6);color:#7c2d12;padding:6px 18px;border-radius:999px;font-weight:700;font-size:13px;letter-spacing:.5px;box-shadow:0 6px 16px -6px rgba(244,114,182,.6);margin-bottom:18px}
+  h1{font-family:'Amiri',serif;font-size:clamp(38px,6vw,64px);margin:0 0 10px;color:var(--ink);line-height:1.1}
+  h1 .ar{color:var(--accent);font-weight:700}
+  .subtitle{font-size:clamp(15px,2vw,18px);color:var(--ink-soft);max-width:640px;margin:0 auto;line-height:1.6;text-align:right;direction:rtl}
+
+  .alphabet-bar{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(64px,1fr));
+    grid-auto-flow:row dense;
+    gap:10px;
+    background:rgba(255,255,255,.55);
+    backdrop-filter:blur(10px);
+    padding:20px;
+    border-radius:24px;
+    box-shadow:var(--shadow);
+    margin-bottom:48px;
+    border:1px solid rgba(255,255,255,.7);
+    direction:rtl;
+  }
+  .alphabet-bar button{
+    font-family:'Amiri',serif;
+    font-size:26px;
+    width:64px;height:64px;
+    border-radius:16px;
+    border:2px solid transparent;
+    background:#fff;
+    cursor:pointer;
+    transition:all .25s ease;
+    color:var(--ink);
+    font-weight:700;
+    box-shadow:0 2px 6px rgba(0,0,0,.06);
+    justify-self:center;
+  }
+  .alphabet-bar button:hover{transform:translateY(-3px) rotate(-3deg);border-color:var(--accent-3);color:var(--accent-3)}
+  .alphabet-bar button.active{background:linear-gradient(135deg,var(--accent),var(--accent-3));color:#fff;border-color:transparent;transform:scale(1.1);box-shadow:0 8px 18px -6px rgba(124,58,237,.6)}
+
+  .class-section{margin-bottom:60px}
+  .class-header{background:linear-gradient(135deg,rgba(255,255,255,.85),rgba(255,255,255,.5));backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.8);border-radius:24px;padding:24px 28px;margin-bottom:24px;box-shadow:var(--shadow);display:flex;align-items:center;gap:18px;flex-wrap:wrap;flex-direction:row-reverse;text-align:right}
+  .class-num{width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,var(--accent),var(--accent-3));color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;box-shadow:0 10px 24px -8px rgba(234,88,12,.55);flex-shrink:0}
+  .class-title h2{margin:0 0 4px;font-size:24px;color:var(--ink);text-align:right}
+  .class-title p{margin:0;color:var(--ink-soft);font-size:14px;line-height:1.5;text-align:right}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;direction:rtl}
+  .card{background:var(--card);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.85);border-radius:24px;padding:24px;box-shadow:var(--shadow);transition:all .35s ease;position:relative;overflow:hidden;direction:rtl}
+  .card::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(252,211,77,.25),transparent 60%);opacity:0;transition:opacity .4s}
+  .card:hover{transform:translateY(-6px);box-shadow:0 28px 50px -20px rgba(124,58,237,.5)}
+  .card:hover::before{opacity:1}
+
+  .letter-display{text-align:center;margin-bottom:16px;position:relative}
+  .letter-big{font-family:'Amiri',serif;font-size:96px;line-height:1;color:var(--accent);font-weight:700;text-shadow:0 6px 0 rgba(234,88,12,.08);transition:transform .3s}
+  .card:hover .letter-big{transform:scale(1.08) rotate(-2deg)}
+  .letter-forms{display:flex;justify-content:center;align-items:end;gap:14px;margin-top:8px;padding-top:14px;border-top:1px dashed rgba(124,58,237,.3)}
+  .letter-forms .form{text-align:center}
+  .letter-forms .form span{display:block;font-family:'Amiri',serif;font-size:30px;color:var(--ink);line-height:1}
+  .letter-forms .form small{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:1px;margin-top:2px;display:block}
+
+  .card-info h3{margin:0 0 4px;font-size:22px;color:var(--ink);font-family:'Amiri',serif;text-align:right}
+  .card-info .translit{color:var(--accent-3);font-weight:600;font-size:13px;letter-spacing:.5px;display:block;text-align:right}
+  .card-info p{margin:10px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.6;text-align:right}
+
+  .story{background:rgba(252,211,77,.18);border-right:4px solid #f59e0b;padding:12px 14px;border-radius:12px 0 0 12px;margin-top:12px;font-size:13.5px;color:#78350f;line-height:1.6;text-align:right}
+  .story strong{color:#9a3412}
+
+  /* ====== PRÁCTICA POR LETRA ====== */
+  .practice-section{margin-top:24px;padding:18px;background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(234,88,12,.06));border-radius:18px;border:1px solid rgba(124,58,237,.15)}
+  .practice-title{font-size:14px;font-weight:700;color:var(--accent-3);text-align:right;margin-bottom:14px;display:flex;align-items:center;gap:6px;justify-content:flex-end}
+  .practice-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .practice-cell{background:#fff;border-radius:12px;padding:10px 4px;text-align:center;border:2px solid rgba(124,58,237,.15);transition:all .2s;min-height:140px;display:flex;flex-direction:column;justify-content:space-between}
+  .practice-cell:hover{transform:translateY(-2px);border-color:var(--accent-3)}
+  .practice-cell .pos{font-size:9px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-weight:700;direction:ltr}
+  .practice-cell .glyph{font-family:'Amiri',serif;font-size:34px;color:var(--ink);line-height:1.2;min-height:42px;display:flex;align-items:center;justify-content:center;direction:rtl}
+  .practice-cell .example{font-family:'Amiri',serif;font-size:18px;color:var(--accent-2);margin-top:4px;direction:rtl;line-height:1.2;font-weight:700}
+  .practice-cell .example-empty{font-size:10px;color:var(--ink-soft);margin-top:6px;direction:ltr;font-style:italic;opacity:.6}
+  .practice-cell .word{font-size:9px;color:var(--ink-soft);direction:ltr;text-align:center;margin-top:2px;font-style:italic;line-height:1.1}
+
+  /* ====== MODO DE PRÁCTICA INTERACTIVA ====== */
+  .practice-mode{background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(255,255,255,.7));backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.85);border-radius:24px;padding:28px;box-shadow:var(--shadow);margin-bottom:48px;direction:rtl}
+  .mode-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;justify-content:center}
+  .mode-tab{background:#fff;border:2px solid transparent;padding:10px 18px;border-radius:999px;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s;color:var(--ink-soft)}
+  .mode-tab:hover{border-color:var(--accent-3);color:var(--accent-3)}
+  .mode-tab.active{background:linear-gradient(135deg,var(--accent),var(--accent-3));color:#fff;border-color:transparent;box-shadow:0 6px 16px -6px rgba(124,58,237,.5)}
+  .mode-content{display:none}
+  .mode-content.active{display:block}
+
+  .quiz-prompt{text-align:center;margin-bottom:20px}
+  .quiz-letter-big{font-family:'Amiri',serif;font-size:120px;color:var(--accent);font-weight:700;line-height:1;margin:0 0 8px;direction:rtl}
+  .quiz-pos{font-size:15px;color:var(--ink-soft);font-weight:600}
+  .quiz-options{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+  .quiz-option{background:#fff;border:3px solid #e5e7eb;border-radius:16px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;font-family:'Amiri',serif;font-size:36px;color:var(--ink);font-weight:700;direction:rtl}
+  .quiz-option:hover{transform:translateY(-3px);border-color:var(--accent-3)}
+  .quiz-option.correct{background:linear-gradient(135deg,#86efac,#4ade80);color:#fff;border-color:#16a34a;animation:pulse .5s}
+  .quiz-option.wrong{background:linear-gradient(135deg,#fca5a5,#f87171);color:#fff;border-color:#dc2626;animation:shake .4s}
+  .quiz-option small{display:block;font-family:'Quicksand',sans-serif;font-size:10px;color:var(--ink-soft);font-weight:500;margin-top:4px;direction:ltr}
+  .quiz-option.correct small,.quiz-option.wrong small{color:rgba(255,255,255,.9)}
+  .quiz-feedback{text-align:center;margin-top:18px;font-size:18px;font-weight:700;min-height:28px}
+  .quiz-score{text-align:center;margin-top:8px;color:var(--ink-soft);font-size:14px}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+  .match-board{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px}
+  .match-column{background:rgba(255,255,255,.6);border-radius:16px;padding:14px}
+  .match-col-title{text-align:center;font-size:13px;font-weight:700;color:var(--ink-soft);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;direction:ltr}
+  .match-item{background:#fff;border:2px solid #e5e7eb;border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer;transition:all .2s;text-align:center;font-family:'Amiri',serif;font-size:28px;font-weight:700;direction:rtl}
+  .match-item:hover{border-color:var(--accent-3);transform:translateX(4px)}
+  .match-item.selected{border-color:var(--accent-3);background:rgba(124,58,237,.1);color:var(--accent-3)}
+  .match-item.matched{opacity:.4;pointer-events:none;background:#d1fae5;border-color:#16a34a}
+  .match-item .label{font-family:'Quicksand',sans-serif;font-size:10px;color:var(--ink-soft);font-weight:500;margin-top:4px;display:block;direction:ltr}
+
+  .word-puzzle{text-align:center;margin-top:16px}
+  .word-display{font-family:'Amiri',serif;font-size:48px;color:var(--ink);font-weight:700;letter-spacing:6px;margin-bottom:20px;line-height:1.5;direction:rtl}
+  .word-display .blank{display:inline-block;width:50px;height:60px;border-bottom:4px solid var(--accent-3);margin:0 4px;vertical-align:middle;background:rgba(124,58,237,.08);border-radius:4px}
+  .word-display .filled{color:var(--accent-2);display:inline-block;margin:0 4px;animation:dropIn .4s}
+  .word-hint{font-size:13px;color:var(--ink-soft);margin-bottom:18px}
+  .word-translation{font-size:13px;color:var(--accent);direction:ltr;font-weight:600;margin-top:4px}
+  @keyframes dropIn{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .letter-choices{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+  .letter-choice{font-family:'Amiri',serif;font-size:36px;width:60px;height:60px;border-radius:14px;background:#fff;border:2px solid #e5e7eb;cursor:pointer;transition:all .2s;color:var(--ink);font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.06);direction:rtl}
+  .letter-choice:hover{transform:translateY(-3px);border-color:var(--accent-3);color:var(--accent-3)}
+  .letter-choice.correct{background:linear-gradient(135deg,#86efac,#4ade80);color:#fff;border-color:#16a34a}
+  .letter-choice.wrong{background:linear-gradient(135deg,#fca5a5,#f87171);color:#fff;border-color:#dc2626}
+  .word-controls{margin-top:18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .control-btn{background:linear-gradient(135deg,var(--accent-3),#6d28d9);color:#fff;border:none;padding:10px 20px;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer;transition:transform .2s}
+  .control-btn:hover{transform:translateY(-2px);box-shadow:0 8px 16px -6px rgba(124,58,237,.5)}
+  .control-btn.skip{background:linear-gradient(135deg,#64748b,#475569)}
+
+  .practice-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding:0 8px;flex-wrap:wrap;gap:8px}
+  .progress-text{font-size:13px;color:var(--ink-soft);font-weight:600}
+  .progress-bar{flex:1;height:8px;background:rgba(124,58,237,.15);border-radius:999px;margin:0 12px;overflow:hidden;min-width:100px}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-3));border-radius:999px;transition:width .4s}
+  .result-banner{text-align:center;padding:24px;background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:16px;margin-top:18px;display:none}
+  .result-banner.show{display:block;animation:dropIn .5s}
+  .result-emoji{font-size:48px;margin-bottom:8px}
+  .result-text{font-size:18px;font-weight:700;color:#78350f}
+
+  .nav-bottom{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.85);backdrop-filter:blur(14px);padding:10px 18px;border-radius:999px;box-shadow:0 12px 30px -10px rgba(0,0,0,.25);display:flex;flex-direction:row;gap:8px;align-items:center;z-index:10;border:1px solid rgba(255,255,255,.8);max-width:90vw;overflow-x:auto}
+  .nav-bottom button{background:transparent;border:1px solid transparent;width:36px;height:36px;border-radius:50%;cursor:pointer;font-family:'Amiri',serif;font-size:18px;color:var(--ink);transition:all .2s;flex-shrink:0}
+  .nav-bottom button:hover{background:var(--accent);color:#fff}
+  .nav-bottom .arrow{width:32px;height:32px;background:var(--ink);color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center}
+  .nav-bottom .arrow:hover{background:var(--accent)}
+
+  footer{text-align:center;margin-top:60px;color:var(--ink-soft);font-size:13px;direction:ltr}
+
+  @media (max-width:600px){
+    .letter-big{font-size:80px}
+    .class-header{padding:18px}
+    .class-num{width:52px;height:52px;font-size:22px;border-radius:16px}
+    h1{font-size:36px}
+    .alphabet-bar button{width:54px;height:54px;font-size:22px}
+    .practice-grid{grid-template-columns:repeat(2,1fr)}
+    .quiz-options{grid-template-columns:repeat(2,1fr)}
+    .quiz-letter-big{font-size:90px}
+    .word-display{font-size:36px}
+    .match-board{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <span class="badge" dir="ltr">🌟 Aventura del Alfabeto Árabe 🌟</span>
+      <h1><span dir="ltr">Aprende las</span> <span class="ar">الحروف العربية</span></h1>
+      <p class="subtitle" dir="ltr">Una página interactiva con las formas de cada letra y práctica. Toca cualquier letra del alfabeto arriba para saltar a ella.</p>
+    </header>
+
+    <nav class="alphabet-bar" id="alphabetBar" aria-label="Alfabeto árabe"></nav>
+
+    <section class="practice-mode" id="practiceSection">
+      <div class="class-header" style="margin-bottom:18px;background:transparent;border:none;box-shadow:none;padding:0">
+        <div class="class-num">🎯</div>
+        <div class="class-title">
+          <h2><span dir="ltr">¡Hora de practicar!</span></h2>
+          <p dir="ltr">Practica las 4 formas de cada letra: <strong>aislada</strong> (sola), <strong>inicial</strong> (al inicio de palabra), <strong>media</strong> (en medio) y <strong>final</strong> (al final).</p>
+        </div>
+      </div>
+
+      <div class="mode-tabs">
+        <button class="mode-tab active" data-mode="identify">🔍 Identifica la forma</button>
+        <button class="mode-tab" data-mode="match">🔗 Empareja letra-posición</button>
+        <button class="mode-tab" data-mode="word">🧩 Completa la palabra</button>
+      </div>
+
+      <div class="practice-progress">
+        <span class="progress-text">Pregunta <span id="qNum">1</span> de <span id="qTotal">10</span></span>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+        <span class="progress-text">Aciertos: <span id="scoreNum">0</span> ⭐</span>
+      </div>
+
+      <div class="mode-content active" id="mode-identify">
+        <div class="quiz-prompt">
+          <div class="quiz-letter-big" id="quizLetter">ب</div>
+          <div class="quiz-pos">¿En qué <strong>posición</strong> aparece esta letra?</div>
+        </div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+        <div class="quiz-score" id="quizScore"></div>
+      </div>
+
+      <div class="mode-content" id="mode-match">
+        <div class="quiz-prompt">
+          <div class="quiz-pos" style="font-size:17px">Une cada letra con la posición correcta</div>
+          <div class="word-hint">Toca una letra a la izquierda, luego toca su posición a la derecha</div>
+        </div>
+        <div class="match-board" id="matchBoard"></div>
+        <div class="quiz-feedback" id="matchFeedback"></div>
+      </div>
+
+      <div class="mode-content" id="mode-word">
+        <div class="word-puzzle">
+          <div class="word-hint">Completa la palabra con la letra que falta:</div>
+          <div class="word-display" id="wordDisplay"></div>
+          <div class="word-translation" id="wordTranslation"></div>
+          <div class="letter-choices" id="letterChoices"></div>
+          <div class="quiz-feedback" id="wordFeedback"></div>
+          <div class="word-controls">
+            <button class="control-btn" onclick="nextWord()">⏭ Siguiente palabra</button>
+            <button class="control-btn skip" onclick="skipWord()">↪ Saltar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-banner" id="resultBanner">
+        <div class="result-emoji">🏆</div>
+        <div class="result-text" id="resultText">¡Excelente trabajo!</div>
+      </div>
+    </section>
+
+    <section class="class-section" id="class-unique">
+      <div class="class-header">
+        <div class="class-num">1</div>
+        <div class="class-title">
+          <h2><span dir="ltr">✨ Letra única —</span> <span style="font-family:'Amiri'">ألف</span></h2>
+          <p dir="ltr">Una letra alta y delgada que siempre está de pie. No se conecta con la siguiente letra.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-unique"></div>
+    </section>
+
+    <section class="class-section" id="class-sisters-1">
+      <div class="class-header">
+        <div class="class-num">2</div>
+        <div class="class-title">
+          <h2><span dir="ltr">👭 Primer grupo de hermanas —</span> <span style="font-family:'Amiri'">ب ت ث</span></h2>
+          <p dir="ltr">Tienen la misma forma: una curva simple como una copita. Solo cambian las "manzanas" (puntos) que llevan.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-sisters-1"></div>
+    </section>
+
+    <section class="class-section" id="class-sisters-2">
+      <div class="class-header">
+        <div class="class-num">3</div>
+        <div class="class-title">
+          <h2><span dir="ltr">👭 Segundo grupo de hermanas —</span> <span style="font-family:'Amiri'">ج ح خ</span></h2>
+          <p dir="ltr">Tienen una gran barriga con un sombrero arriba. Solo cambia lo que llevan encima o dentro.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-sisters-2"></div>
+    </section>
+
+    <section class="class-section" id="class-4">
+      <div class="class-header">
+        <div class="class-num">4</div>
+        <div class="class-title">
+          <h2><span dir="ltr">🪑 Las personitas sentadas —</span> <span style="font-family:'Amiri'">د ذ ر ز</span></h2>
+          <p dir="ltr">Parecen una persona pequeña sentada con la espalda recta. Solo cambia el número de puntos encima.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-4"></div>
+    </section>
+
+    <section class="class-section" id="class-5">
+      <div class="class-header">
+        <div class="class-num">5</div>
+        <div class="class-title">
+          <h2><span dir="ltr">🦷 Las letras con dientes —</span> <span style="font-family:'Amiri'">س ش</span></h2>
+          <p dir="ltr">Tienen forma de tres dientes pequeños y un gran círculo incompleto.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-5"></div>
+    </section>
+
+    <section class="class-section" id="class-6">
+      <div class="class-header">
+        <div class="class-num">6</div>
+        <div class="class-title">
+          <h2><span dir="ltr">💪 Las letras enfáticas —</span> <span style="font-family:'Amiri'">ص ض ط ظ</span></h2>
+          <p dir="ltr">Letras con curvas anchas y círculos grandes. Llevan o no llevan un punto encima.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-6"></div>
+    </section>
+
+    <section class="class-section" id="class-7">
+      <div class="class-header">
+        <div class="class-num">7</div>
+        <div class="class-title">
+          <h2><span dir="ltr">🗣️ Las letras de la garganta —</span> <span style="font-family:'Amiri'">ع غ</span></h2>
+          <p dir="ltr">Parecen dos círculos (uno arriba y otro abajo).</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-7"></div>
+    </section>
+
+    <section class="class-section" id="class-8">
+      <div class="class-header">
+        <div class="class-num">8</div>
+        <div class="class-title">
+          <h2><span dir="ltr">🥣 Las letras con cuenco —</span> <span style="font-family:'Amiri'">ف ق ك</span></h2>
+          <p dir="ltr">Tienen un círculo al inicio y un cuerpo (cuenco) sobre la línea.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-8"></div>
+    </section>
+
+    <section class="class-section" id="class-9">
+      <div class="class-header">
+        <div class="class-num">9</div>
+        <div class="class-title">
+          <h2><span dir="ltr">🥄 Las letras con forma de cuchara —</span> <span style="font-family:'Amiri'">ل م ن</span></h2>
+          <p dir="ltr">Letras con formas redondeadas, como cucharas u ollas.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-9"></div>
+    </section>
+
+    <section class="class-section" id="class-10">
+      <div class="class-header">
+        <div class="class-num">10</div>
+        <div class="class-title">
+          <h2><span dir="ltr">🌬️ Las letras suaves —</span> <span style="font-family:'Amiri'">ه و ي</span></h2>
+          <p dir="ltr">Las últimas tres letras del alfabeto. Cada una tiene una forma única.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid-10"></div>
+    </section>
+
+    <footer dir="ltr">
+      Hecho con <span style="color:var(--accent);font-weight:700">♥</span> para pequeñas aprendices del árabe · 28 letras con práctica
+    </footer>
+  </div>
+
+  <nav class="nav-bottom" id="navBottom">
+    <button class="arrow" id="nextLetter" title="Siguiente">▶</button>
+    <div id="navLetters" style="display:flex;gap:4px;flex-direction:row-reverse"></div>
+    <button class="arrow" id="prevLetter" title="Anterior">◀</button>
+  </nav>
+
+<script>
+/* ============================================================
+   28 LETRAS — Formas Unicode correctas (FE8D–FEF4)
+   + Palabras reales con tashkil correcto y la letra en cada posición
+   ============================================================ */
+const LETTERS = [
+  // 1) Alif — solo tiene isolated y final
+  { ar:'ا', name:'Alif', order:1, group:'unique',
+    forms:{isolated:'ﺍ',initial:'ﺍ',medial:'ﺎ',final:'ﺎ'},
+    // La letra Alif aparece en: aislada=ال, inicial=أ(al inicio con hamza), media=كـتـاب, final=عـصـا
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'أَكَلَ',t:'akala (comió)'},
+      medial:{w:'كِتَاب',t:'kitāb (libro)'},
+      final:{w:'عَصًا',t:'ʿaṣā (bastón)'}
+    },
+    story:`<strong>Alif (ألف)</strong> es una línea vertical alta y delgada, como un palo parado.` },
+
+  // 2) Bā' — يربط من الجانبين (dual-joining)
+  { ar:'ب', name:'Bāʼ', order:2, group:'sisters-1',
+    forms:{isolated:'ﺏ',initial:'ﺑ',medial:'ﺒ',final:'ﺐ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺑَﺤﺚَ',t:'baḥatha (buscó)'},
+      medial:{w:'ﻃَﺒَﻖ',t:'ṭabaq (plato)'},
+      final:{w:'ﺣُﺐّ',t:'ḥubb (amor)'}
+    },
+    story:`<strong>Bā' (باء)</strong> tiene forma de <strong>copita</strong> con una <strong>manzana (un punto) debajo</strong>.` },
+
+  // 3) Tā'
+  { ar:'ت', name:'Tāʼ', order:3, group:'sisters-1',
+    forms:{isolated:'ﺕ',initial:'ﺗ',medial:'ﺘ',final:'ﺖ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺗَﻌَﻠَّﻢَ',t:'taʿallama (aprendió)'},
+      medial:{w:'ﻛَﺘَﺐَ',t:'kataba (escribió)'},
+      final:{w:'ﺑَﻴﺖ',t:'bayt (casa)'}
+    },
+    story:`<strong>Tā' (تاء)</strong> tiene la misma copita, con <strong>dos manzanas (dos puntos) encima</strong>.` },
+
+  // 4) Thā'
+  { ar:'ث', name:'Thāʼ', order:4, group:'sisters-1',
+    forms:{isolated:'ﺙ',initial:'ﺛ',medial:'ﺜ',final:'ﺚ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺛَﻮﻡ',t:'thūm (ajo)'},
+      medial:{w:'ﻣِﺛَﺎﻝ',t:'mithāl (ejemplo)'},
+      final:{w:'ﺣَﺪَﺙَ',t:'ḥadatha (sucedió)'}
+    },
+    story:`<strong>Thā' (ثاء)</strong> tiene la misma copita, con <strong>tres manzanas (tres puntos) encima</strong>.` },
+
+  // 5) Jīm
+  { ar:'ج', name:'Jīm', order:5, group:'sisters-2',
+    forms:{isolated:'ﺝ',initial:'ﺟ',medial:'ﺠ',final:'ﺞ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺟَﻠَﺲَ',t:'jalasa (se sentó)'},
+      medial:{w:'ﻳَﺠِﺐ',t:'yajibu (debe)'},
+      final:{w:'ﺣَﺞّ',t:'ḥajj (peregrinación)'}
+    },
+    story:`<strong>Jīm (جيم)</strong> tiene una <strong>gran barriga</strong>, un <strong>sombrero</strong> arriba, y una <strong>manzana dentro</strong>.` },
+
+  // 6) Ḥā'
+  { ar:'ح', name:'Ḥāʼ', order:6, group:'sisters-2',
+    forms:{isolated:'ﺡ',initial:'ﺣ',medial:'ﺤ',final:'ﺢ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺣَﻤَل',t:'ḥamal (cargó/borrego)'},
+      medial:{w:'ﺍﻟْﺤُﺐّ',t:'al-ḥubb (el cariño)'},
+      final:{w:'ﺑَﻠَﺢ',t:'balaḥ (dátil)'}
+    },
+    story:`<strong>Ḥāʼ (حاء)</strong> tiene la gran barriga con sombrero, pero <strong>no tiene ninguna manzana</strong>.` },
+
+  // 7) Khā'
+  { ar:'خ', name:'Khāʼ', order:7, group:'sisters-2',
+    forms:{isolated:'ﺥ',initial:'ﺧ',medial:'ﺨ',final:'ﺦ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺧَﻮﻑ',t:'khawf (miedo)'},
+      medial:{w:'ﻳَﺨْﺴَﺮ',t:'yakhsur (pierde)'},
+      final:{w:'ﺑِﻄّﻴﺦ',t:'biṭṭīkh (sandía)'}
+    },
+    story:`<strong>Khāʼ (خاء)</strong> tiene la gran barriga, el sombrero, <strong>y una manzana encima del sombrero</strong>.` },
+
+  // 8) Dāl — solo isolated y final (right-joining)
+  { ar:'د', name:'Dāl', order:8, group:'4',
+    forms:{isolated:'ﺩ',initial:'ﺩ',medial:'ﺪ',final:'ﺪ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺩُﺏّ',t:'dubb (oso)'},
+      medial:{w:'ﺣَﺪِﻳﺪ',t:'ḥadīd (hierro)'},
+      final:{w:'ﻳَﺪ',t:'yad (mano)'}
+    },
+    story:`<strong>Dāl (دال)</strong> parece una persona pequeña sentada con la espalda recta. <strong>No tiene manzanas</strong>.` },
+
+  // 9) Dhāl
+  { ar:'ذ', name:'Dhāl', order:9, group:'4',
+    forms:{isolated:'ﺫ',initial:'ﺫ',medial:'ﺬ',final:'ﺬ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺫَﻫَﺐ',t:'dhahab (oro)'},
+      medial:{w:'ﻫَﺬَﺏ',t:'hadhab'},
+      final:{w:'ﻟَﺬﻳﺬ',t:'ladhīdh (delicioso)'}
+    },
+    story:`<strong>Dhāl (ذال)</strong> es igual que Dāl, pero lleva <strong>una manzana (un punto) encima</strong>.` },
+
+  // 10) Rā' — solo isolated y final
+  { ar:'ر', name:'Rāʼ', order:10, group:'4',
+    forms:{isolated:'ﺭ',initial:'ﺭ',medial:'ﺮ',final:'ﺮ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺭَﺍﻫﺐ',t:'rāhib (monje)'},
+      medial:{w:'ﻃَﺎﺋِﺮَﺓ',t:'ṭāʼira (avión)'},
+      final:{w:'ﺗَﻤﺮ',t:'tamr (dátil)'}
+    },
+    story:`<strong>Rā' (راء)</strong> tiene la forma sentada, pero es <strong>más curva</strong>. <strong>No tiene manzanas</strong>.` },
+
+  // 11) Zāy
+  { ar:'ﺯ', name:'Zāy', order:11, group:'4',
+    forms:{isolated:'ﺯ',initial:'ﺯ',medial:'ﺰ',final:'ﺰ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺯَﻫﺮَﺓ',t:'zahra (flor)'},
+      medial:{w:'ﻣِﻴﺰَﺍﻥ',t:'mīzān (balanza)'},
+      final:{w:'ﺗِﻠﻔَﺎﺯ',t:'tilfāz (televisión)'}
+    },
+    story:`<strong>Zāy (زاي)</strong> es como Rā', curvada, pero lleva <strong>una manzana (un punto) encima</strong>.` },
+
+  // 12) Sīn
+  { ar:'س', name:'Sīn', order:12, group:'5',
+    forms:{isolated:'ﺱ',initial:'ﺳ',medial:'ﺴ',final:'ﺲ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺳَﺠَﺪَ',t:'sajada (se postró)'},
+      medial:{w:'ﺍﻟﺴَّﻤَﺎﺀ',t:'as-samāʼ (el cielo)'},
+      final:{w:'ﺷَﻤﺲ',t:'shams (sol)'}
+    },
+    story:`<strong>Sīn (سين)</strong> parece una boca con <strong>tres dientes</strong> y un círculo incompleto. <strong>No lleva manzanas</strong>.` },
+
+  // 13) Shīn
+  { ar:'ش', name:'Shīn', order:13, group:'5',
+    forms:{isolated:'ﺵ',initial:'ﺷ',medial:'ﺸ',final:'ﺶ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺷَﺮِﺏَ',t:'shariba (bebió)'},
+      medial:{w:'ﺍﻟﺸُّﺮُﻭﻕ',t:'ash-shurūq (amanecer)'},
+      final:{w:'ﻋَﺮﺵ',t:'ʿarsh (trono)'}
+    },
+    story:`<strong>Shīn (شين)</strong> es igual que Sīn, pero lleva <strong>tres manzanas (tres puntos) encima</strong>.` },
+
+  // 14) Ṣād
+  { ar:'ص', name:'Ṣād', order:14, group:'6',
+    forms:{isolated:'ﺹ',initial:'ﺻ',medial:'ﺼ',final:'ﺺ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺻَﺒَﺎﺡ',t:'ṣabāḥ (mañana)'},
+      medial:{w:'ﺍﻟﺼَّﺒﺮ',t:'aṣ-ṣabr (la paciencia)'},
+      final:{w:'ﻣِﻘَﺺّ',t:'miqaṣṣ (tijeras)'}
+    },
+    story:`<strong>Ṣād (صاد)</strong> tiene una <strong>curva que sube</strong>, una <strong>línea recta</strong> y un <strong>círculo grande incompleto</strong>.` },
+
+  // 15) Ḍād
+  { ar:'ض', name:'Ḍād', order:15, group:'6',
+    forms:{isolated:'ﺽ',initial:'ﺿ',medial:'ﻀ',final:'ﺾ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﺿَﺤِﻚَ',t:'ḍaḥika (rió)'},
+      medial:{w:'ﺣَﻀَﺮَ',t:'ḥaḍara (estuvo presente)'},
+      final:{w:'ﺃَﺑﻴﺾ',t:'abyaḍ (blanco)'}
+    },
+    story:`<strong>Ḍād (ضاد)</strong> es igual que Ṣād, pero lleva <strong>una manzana (un punto) encima</strong>.` },
+
+  // 16) Ṭā'
+  { ar:'ط', name:'Ṭāʼ', order:16, group:'6',
+    forms:{isolated:'ﻁ',initial:'ﻃ',medial:'ﻄ',final:'ﻂ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﻃَﺎﺋِﺮَﺓ',t:'ṭāʼira (avión)'},
+      medial:{w:'ﺑَﻄَﺮِﻳﻖ',t:'biṭarīq (por camino)'},
+      final:{w:'ﺧَﻴﻂ',t:'khayṭ (hilo)'}
+    },
+    story:`<strong>Ṭā' (طاء)</strong> es como Ṣād pero con un <strong>palo recto arriba</strong> de la curva.` },
+
+  // 17) Ẓā'
+  { ar:'ظ', name:'Ẓāʼ', order:17, group:'6',
+    forms:{isolated:'ﻅ',initial:'ﻇ',medial:'ﻈ',final:'ﻆ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﻇَﺎﻫِﺮ',t:'ẓāhir'},
+      medial:{w:'ﻣَﺤﻈَﺔ',t:'maḥẓa'},
+      final:{w:'ﺣَﻔﻆ',t:'ḥafẓ (memorización)'}
+    },
+    story:`<strong>Ẓā' (ظاء)</strong> es igual que Ṭā' con el palo arriba, pero lleva <strong>una manzana (un punto) encima</strong>.` },
+
+  // 18) ʿAyn
+  { ar:'ع', name:'ʿAyn', order:18, group:'7',
+    forms:{isolated:'ﻉ',initial:'ﻋ',medial:'ﻌ',final:'ﻊ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﻋَﺒَﺲَ',t:'ʿabasa (frunció)'},
+      medial:{w:'ﻟَﻌِﺐَ',t:'laʿiba (jugó)'},
+      final:{w:'ﺑَﺎﺋِﻊ',t:'bāʼiʿ (vendedor)'}
+    },
+    story:`<strong>ʿAyn (عين)</strong> tiene un <strong>círculo pequeño arriba</strong> y otro <strong>gran círculo abajo</strong>.` },
+
+  // 19) Ghayn
+  { ar:'غ', name:'Ghayn', order:19, group:'7',
+    forms:{isolated:'ﻍ',initial:'ﻏ',medial:'ﻐ',final:'ﻎ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﻏَﺮﺏ',t:'gharb (oeste)'},
+      medial:{w:'ﺑَﻐَﺪَﺍﺩ',t:'Baghdād (Bagdad)'},
+      final:{w:'ﺑَﺎﻍ',t:'bāgh'}
+    },
+    story:`<strong>Ghayn (غين)</strong> es como ʿAyn con sus dos círculos, pero lleva <strong>una manzana (un punto) encima</strong>.` },
+
+  // 20) Fā'
+  { ar:'ف', name:'Fāʼ', order:20, group:'8',
+    forms:{isolated:'ﻑ',initial:'ﻓ',medial:'ﻔ',final:'ﻒ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﻓَﻬِﻢَ',t:'fahima (entendió)'},
+      medial:{w:'ﺟَﻔَﺎﻑ',t:'jafāf (sequedad)'},
+      final:{w:'ﺿَﻌِﻴﻒ',t:'ḍaʿīf (débil)'}
+    },
+    story:`<strong>Fā' (فاء)</strong> tiene un <strong>círculo al inicio</strong> y un <strong>cuerpo plano</strong>. Lleva <strong>una manzana (un punto) encima</strong>.` },
+
+  // 21) Qāf
+  { ar:'ق', name:'Qāf', order:21, group:'8',
+    forms:{isolated:'ﻕ',initial:'ﻗ',medial:'ﻘ',final:'ﻖ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﻗَﺮَﺃَ',t:'qaraʼa (leyó)'},
+      medial:{w:'ﺻَﻘﺮ',t:'ṣaqr (halcón)'},
+      final:{w:'ﻭَﺭَﻕ',t:'waraq (papel/hojas)'}
+    },
+    story:`<strong>Qāf (قاف)</strong> tiene un <strong>círculo al inicio</strong> y un <strong>gran círculo hondo</strong> (cuenco). Lleva <strong>dos manzanas encima</strong>.` },
+
+  // 22) Kāf
+  { ar:'ك', name:'Kāf', order:22, group:'8',
+    forms:{isolated:'ﻙ',initial:'ﻛ',medial:'ﻜ',final:'ﻚ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﻛُﺮﺳﻲ',t:'kursī (silla)'},
+      medial:{w:'ﻳَﻜﺘُﺐ',t:'yaktub (escribe)'},
+      final:{w:'ﺳَﻤَﻚ',t:'samak (pez)'}
+    },
+    story:`<strong>Kāf (كاف)</strong> parece una <strong>persona grande sentada con la espalda recta</strong>.` },
+
+  // 23) Lām
+  { ar:'ل', name:'Lām', order:23, group:'9',
+    forms:{isolated:'ﻝ',initial:'ﻟ',medial:'ﻠ',final:'ﻞ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﻟَﻴﻤُﻮﻥ',t:'laymūn (limón)'},
+      medial:{w:'ﻋِﻠﻢ',t:'ʿilm (ciencia)'},
+      final:{w:'ﻟَﻴْﻞ',t:'layl (noche)'}
+    },
+    story:`<strong>Lām (لام)</strong> tiene una <strong>línea recta</strong> y un <strong>arco u olla</strong>.` },
+
+  // 24) Mīm
+  { ar:'م', name:'Mīm', order:24, group:'9',
+    forms:{isolated:'ﻡ',initial:'ﻣ',medial:'ﻤ',final:'ﻢ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﻣَﺪﺭَﺳَﺔ',t:'madrasa (escuela)'},
+      medial:{w:'ﻟَﻴﻤُﻮﻥ',t:'laymūn (limón)'},
+      final:{w:'ﻋِﻠﻢ',t:'ʿilm (ciencia)'}
+    },
+    story:`<strong>Mīm (ميم)</strong> tiene un <strong>círculo completo</strong>, un <strong>guión</strong> y una <strong>línea recta debajo</strong>.` },
+
+  // 25) Nūn
+  { ar:'ن', name:'Nūn', order:25, group:'9',
+    forms:{isolated:'ﻥ',initial:'ﻧ',medial:'ﻨ',final:'ﻦ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﻧَﺠﻤَﺔ',t:'najma (estrella)'},
+      medial:{w:'ﻋِﻨﺐ',t:'ʿinab (uvas)'},
+      final:{w:'ﻏُﺼﻦ',t:'ghuṣn (rama)'}
+    },
+    story:`<strong>Nūn (نون)</strong> es como una <strong>olla honda</strong> con una <strong>manzana (un punto) dentro</strong>.` },
+
+  // 26) Hā'
+  { ar:'ه', name:'Hāʼ', order:26, group:'10',
+    forms:{isolated:'ﻩ',initial:'ﻫ',medial:'ﻬ',final:'ﻪ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﻫَﺪِﻳَﺔ',t:'hadiyya (regalo)'},
+      medial:{w:'ﻳَﻬﺘﻒ',t:'yahtaf'},
+      final:{w:'ﻭَﺟﻪ',t:'wajh (cara)'}
+    },
+    story:`<strong>Hā' (هاء)</strong> parece una <strong>boquita pequeña y redonda</strong>.` },
+
+  // 27) Wāw — solo isolated y final
+  { ar:'و', name:'Wāw', order:27, group:'10',
+    forms:{isolated:'ﻭ',initial:'ﻭ',medial:'ﻮ',final:'ﻮ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﻭَﺻَﻞ',t:'waṣala (llegó)'},
+      medial:{w:'ﺍﻟْﻮُﺻُﻮﻝ',t:'al-wuṣūl (la llegada)'},
+      final:{w:'ﻳَﻠْﻬَﻮ',t:'yalahu (juega)'}
+    },
+    story:`<strong>Wāw (واو)</strong> tiene la forma de una <strong>coma</strong>.` },
+
+  // 28) Yā'
+  { ar:'ي', name:'Yāʼ', order:28, group:'10',
+    forms:{isolated:'ﻱ',initial:'ﻳ',medial:'ﻴ',final:'ﻲ'},
+    example:{
+      isolated:{w:'',t:''},
+      initial:{w:'ﻳَﻠﻌَﺐ',t:'yalʿab (juega)'},
+      medial:{w:'ﺛَﻤِﻴﻦ',t:'thamīn (valioso)'},
+      final:{w:'ﻏَﻨِﻲّ',t:'ghanīy (rico)'}
+    },
+    story:`<strong>Yā' (ياء)</strong> parece un <strong>pequeño barco</strong> con <strong>dos manzanas (dos puntos) debajo</strong>.` }
+];
+
+const groupMap = {
+  'unique':'grid-unique',
+  'sisters-1':'grid-sisters-1',
+  'sisters-2':'grid-sisters-2',
+  '4':'grid-4','5':'grid-5','6':'grid-6',
+  '7':'grid-7','8':'grid-8','9':'grid-9','10':'grid-10'
+};
+
+const POSITIONS = [
+  {key:'isolated',label:'Aislada',hint:'sola'},
+  {key:'initial',label:'Inicial',hint:'al inicio'},
+  {key:'medial',label:'Media',hint:'en medio'},
+  {key:'final',label:'Final',hint:'al final'}
+];
+
+function buildCard(letter){
+  const examplesHTML = POSITIONS.map(p=>{
+    const ex = letter.example?.[p.key];
+    const hasWord = ex && ex.w && ex.w.length > 0;
+    return `
+      <div class="practice-cell">
+        <div class="pos">${p.label}</div>
+        <div class="glyph">${letter.forms[p.key]}</div>
+        ${hasWord ? `<div class="example">${ex.w}</div><div class="word">${ex.t}</div>` : `<div class="example-empty">— letra suelta —</div>`}
+      </div>`;
+  }).join('');
+
+  return `
+    <article class="card" data-order="${letter.order}" data-ar="${letter.ar}" id="card-${letter.order}">
+      <div class="letter-display">
+        <div class="letter-big">${letter.ar}</div>
+        <div class="letter-forms">
+          <div class="form"><span>${letter.forms.isolated}</span><small>aislada</small></div>
+          <div class="form"><span>${letter.forms.initial}</span><small>inicial</small></div>
+          <div class="form"><span>${letter.forms.medial}</span><small>media</small></div>
+          <div class="form"><span>${letter.forms.final}</span><small>final</small></div>
+        </div>
+      </div>
+      <div class="card-info">
+        <h3>${letter.name}</h3>
+        <span class="translit">${letter.ar} · #${letter.order} / 28</span>
+        <div class="story">${letter.story}</div>
+        <div class="practice-section">
+          <div class="practice-title">📚 Las 4 formas de <span style="font-family:'Amiri';font-size:20px">${letter.ar}</span></div>
+          <div class="practice-grid">${examplesHTML}</div>
+        </div>
+      </div>
+    </article>`;
+}
+
+let quizState = {letter:null, position:null, score:0, total:0, max:10};
+function startIdentify(){
+  const idx = Math.floor(Math.random()*LETTERS.length);
+  const l = LETTERS[idx];
+  const pos = POSITIONS[Math.floor(Math.random()*4)];
+  quizState.letter = l;
+  quizState.position = pos;
+  document.getElementById('quizLetter').textContent = l.forms[pos.key];
+  const correctLabel = pos.label;
+  const opts = [pos, ...POSITIONS.filter(p=>p.key!==pos.key).slice(0,3)];
+  for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]]}
+  document.getElementById('quizOptions').innerHTML = opts.map(o=>`
+    <button class="quiz-option" data-pos="${o.key}">${o.label}<small>${o.hint}</small></button>
+  `).join('');
+  document.getElementById('quizFeedback').textContent = '';
+  document.querySelectorAll('#quizOptions .quiz-option').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      if(btn.classList.contains('correct')||btn.classList.contains('wrong')) return;
+      const picked = btn.dataset.pos;
+      if(picked===pos.key){
+        btn.classList.add('correct');
+        quizState.score++;
+        document.getElementById('quizFeedback').textContent = '✨ ¡Correcto! Es la forma ' + pos.label.toLowerCase();
+      } else {
+        btn.classList.add('wrong');
+        document.querySelector(`#quizOptions .quiz-option[data-pos="${pos.key}"]`).classList.add('correct');
+        document.getElementById('quizFeedback').textContent = '😅 Era la forma ' + pos.label.toLowerCase();
+      }
+      quizState.total++;
+      document.getElementById('scoreNum').textContent = quizState.score;
+      document.getElementById('qNum').textContent = Math.min(quizState.total+1, quizState.max);
+      document.getElementById('progressFill').style.width = (Math.min(quizState.total,quizState.max)/quizState.max*100)+'%';
+      if(quizState.total>=quizState.max){showResult()}
+    });
+  });
+}
+
+let matchState = {pairs:[], selectedLetter:null, matched:0};
+function startMatch(){
+  const shuffled = [...LETTERS].sort(()=>Math.random()-0.5).slice(0,5);
+  matchState.pairs = shuffled.map(l=>({letter:l, pos:POSITIONS[Math.floor(Math.random()*4)]}));
+  matchState.matched = 0;
+  const leftItems = [...matchState.pairs].sort(()=>Math.random()-0.5);
+  const rightItems = [...matchState.pairs].sort(()=>Math.random()-0.5);
+  document.getElementById('matchBoard').innerHTML = `
+    <div class="match-column">
+      <div class="match-col-title">🔤 Letra</div>
+      ${leftItems.map((p,i)=>`
+        <div class="match-item" data-letter="${p.letter.ar}" data-idx="${matchState.pairs.indexOf(p)}">
+          ${p.letter.forms[p.pos.key]}
+          <span class="label">${p.letter.name}</span>
+        </div>`).join('')}
+    </div>
+    <div class="match-column">
+      <div class="match-col-title">📍 Posición</div>
+      ${rightItems.map((p,i)=>`
+        <div class="match-item" data-pos="${p.pos.key}" data-idx="${matchState.pairs.indexOf(p)}">
+          ${p.pos.label}
+          <span class="label">${p.pos.hint}</span>
+        </div>`).join('')}
+    </div>
+  `;
+  document.getElementById('matchFeedback').textContent = '';
+  let sel = null;
+  document.querySelectorAll('#matchBoard .match-item').forEach(el=>{
+    el.addEventListener('click',()=>{
+      if(el.classList.contains('matched')) return;
+      if(!sel){
+        document.querySelectorAll('#matchBoard .match-item.selected').forEach(e=>e.classList.remove('selected'));
+        el.classList.add('selected');
+        sel = el;
+      } else {
+        if(sel===el){sel.classList.remove('selected');sel=null;return}
+        const selIdx = sel.dataset.idx;
+        const elIdx = el.dataset.idx;
+        if(selIdx===elIdx){
+          sel.classList.add('matched');
+          el.classList.add('matched');
+          sel.classList.remove('selected');
+          matchState.matched++;
+          document.getElementById('matchFeedback').textContent = '✨ ¡Bien! ' + matchState.matched + ' / 5';
+          if(matchState.matched>=5){
+            setTimeout(()=>{document.getElementById('matchFeedback').textContent='🏆 ¡Todas emparejadas!';startMatch()},800);
+          }
+        } else {
+          sel.classList.add('wrong');
+          el.classList.add('wrong');
+          setTimeout(()=>{sel.classList.remove('wrong','selected');el.classList.remove('wrong')},500);
+        }
+        sel = null;
+      }
+    });
+  });
+}
+
+let wordState = {word:null, blankIndex:0, answer:null};
+// Banco de palabras verificadas con tashkil correcto
+const WORD_BANK = [
+  {w:'ﺑَﻴﺖ',blank:2,a:'ﻴ',t:'bayt (casa)'},
+  {w:'ﻛِﺘَﺎﺏ',blank:2,a:'ﺘ',t:'kitāb (libro)'},
+  {w:'ﺟَﻤَﻞ',blank:1,a:'ﻤ',t:'jamal (camello)'},
+  {w:'ﺷَﻤﺲ',blank:2,a:'ﻤ',t:'shams (sol)'},
+  {w:'ﻋَﻴﻦ',blank:1,a:'ﻴ',t:'ʿayn (ojo)'},
+  {w:'ﻳَﺪ',blank:0,a:'ﻳ',t:'yad (mano)'},
+  {w:'ﻗَﻠَﻢ',blank:3,a:'ﻢ',t:'qalam (lápiz)'},
+  {w:'ﻗَﺮِﻳﺐ',blank:2,a:'ﺭ',t:'qarīb (cerca)'},
+  {w:'ﻋِﻠﻢ',blank:1,a:'ﻠ',t:'ʿilm (ciencia)'},
+  {w:'ﺳَﻤَﺎﺀ',blank:2,a:'ﻤ',t:'samāʼ (cielo)'},
+  {w:'ﻭَﺟﻪ',blank:2,a:'ﻬ',t:'wajh (cara)'},
+  {w:'ﺣُﺐّ',blank:2,a:'ﺐ',t:'ḥubb (amor)'},
+  {w:'ﻃَﺒِﻴﺐ',blank:3,a:'ﻴ',t:'ṭabīb (médico)'},
+  {w:'ﻧَﺠﻤَﺔ',blank:3,a:'ﻤ',t:'najma (estrella)'},
+  {w:'ﺩُﺏّ',blank:1,a:'ﺑ',t:'dubb (oso)'},
+  {w:'ﺯَﻫﺮَﺓ',blank:2,a:'ﻫ',t:'zahra (flor)'},
+  {w:'ﺻَﺒَﺎﺡ',blank:3,a:'ﺎ',t:'ṣabāḥ (mañana)'},
+  {w:'ﻏَﺰَﺍﻝ',blank:3,a:'ﺍ',t:'ghazāl (gacela)'},
+  {w:'ﻓَﻬِﻢَ',blank:1,a:'ﻫ',t:'fahima (entendió)'},
+  {w:'ﻛُﺮَﺳﻲ',blank:2,a:'ﺮ',t:'kursī (silla)'}
+];
+
+function startWord(){
+  const w = WORD_BANK[Math.floor(Math.random()*WORD_BANK.length)];
+  wordState.word = w;
+  wordState.blankIndex = w.blank;
+  const glyphs = [...w.w];
+  wordState.answer = glyphs[w.blank];
+  let html = glyphs.map((g,i)=>{
+    if(i===w.blank) return '<span class="blank" data-idx="'+i+'"></span>';
+    return '<span class="filled">'+g+'</span>';
+  }).join('');
+  document.getElementById('wordDisplay').innerHTML = html;
+  document.getElementById('wordTranslation').textContent = w.t;
+  document.getElementById('wordFeedback').textContent = '';
+  // Pool más amplio de letras en sus formas finales
+  const pool = ['ﺍ','ﺏ','ﺕ','ﺙ','ﺝ','ﺡ','ﺥ','ﺩ','ﺫ','ﺭ','ﺯ','ﺱ','ﺵ','ﺹ','ﺽ','ﻁ','ﻅ','ﻉ','ﻍ','ﻑ','ﻕ','ﻙ','ﻞ','ﻡ','ﻥ','ﻪ','ﻮ','ﻲ'];
+  const correct = glyphs[w.blank];
+  const distractors = pool.filter(l=>l!==correct).sort(()=>Math.random()-0.5).slice(0,3);
+  const choices = [correct, ...distractors].sort(()=>Math.random()-0.5);
+  document.getElementById('letterChoices').innerHTML = choices.map(c=>`
+    <button class="letter-choice" data-glyph="${c}">${c}</button>
+  `).join('');
+  document.querySelectorAll('#letterChoices .letter-choice').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      if(btn.classList.contains('correct')||btn.classList.contains('wrong')) return;
+      const picked = btn.dataset.glyph;
+      if(picked===correct){
+        btn.classList.add('correct');
+        document.getElementById('wordFeedback').textContent = '✨ ¡Excelente!';
+        const blank = document.querySelector('#wordDisplay .blank');
+        if(blank){blank.outerHTML = '<span class="filled">'+correct+'</span>';}
+      } else {
+        btn.classList.add('wrong');
+        document.getElementById('wordFeedback').textContent = '😅 Intenta de nuevo';
+        setTimeout(()=>btn.classList.remove('wrong'),800);
+      }
+    });
+  });
+}
+function nextWord(){startWord()}
+function skipWord(){nextWord()}
+
+function showResult(){
+  const pct = Math.round(quizState.score/quizState.max*100);
+  const banner = document.getElementById('resultBanner');
+  const text = document.getElementById('resultText');
+  banner.classList.add('show');
+  if(pct>=90){text.textContent='🏆 ¡Increíble! '+quizState.score+'/'+quizState.max+' — Eres una estrella';}
+  else if(pct>=70){text.textContent='🌟 ¡Muy bien! '+quizState.score+'/'+quizState.max+' — Sigue así';}
+  else if(pct>=50){text.textContent='😊 Bien, '+quizState.score+'/'+quizState.max+' — Puedes mejorar';}
+  else{text.textContent='💪 '+quizState.score+'/'+quizState.max+' — Vuelve a intentarlo';}
+  setTimeout(()=>{
+    banner.classList.remove('show');
+    quizState.score=0; quizState.total=0;
+    document.getElementById('qNum').textContent='1';
+    document.getElementById('scoreNum').textContent='0';
+    document.getElementById('progressFill').style.width='10%';
+    if(currentMode==='identify') startIdentify();
+    else if(currentMode==='match') startMatch();
+    else startWord();
+  }, 3500);
+}
+
+let currentMode = 'identify';
+document.querySelectorAll('.mode-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.mode-content').forEach(m=>m.classList.remove('active'));
+    tab.classList.add('active');
+    currentMode = tab.dataset.mode;
+    document.getElementById('mode-'+currentMode).classList.add('active');
+    quizState.score=0; quizState.total=0;
+    document.getElementById('qNum').textContent='1';
+    document.getElementById('scoreNum').textContent='0';
+    document.getElementById('progressFill').style.width='10%';
+    if(currentMode==='identify') startIdentify();
+    else if(currentMode==='match') startMatch();
+    else startWord();
+  });
+});
+
+function render(){
+  Object.entries(groupMap).forEach(([g,elId])=>{
+    const el = document.getElementById(elId);
+    const items = LETTERS.filter(l=>l.group===g).sort((a,b)=>a.order-b.order);
+    el.innerHTML = items.map(buildCard).join('');
+  });
+  const bar = document.getElementById('alphabetBar');
+  bar.innerHTML = [...LETTERS].sort((a,b)=>a.order-b.order)
+    .map(l=>`<button data-target="${l.order}" title="${l.name}">${l.ar}</button>`).join('');
+  const nav = document.getElementById('navLetters');
+  nav.innerHTML = [...LETTERS].sort((a,b)=>a.order-b.order)
+    .map(l=>`<button data-target="${l.order}" title="${l.name}">${l.ar}</button>`).join('');
+  bar.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>scrollToLetter(parseInt(btn.dataset.target))));
+  nav.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>scrollToLetter(parseInt(btn.dataset.target))));
+}
+
+function scrollToLetter(order){
+  const card = document.getElementById('card-'+order);
+  if(!card){window.scrollTo({top:0,behavior:'smooth'});return;}
+  card.scrollIntoView({behavior:'smooth',block:'center'});
+  card.style.transform='scale(1.04)';
+  setTimeout(()=>card.style.transform='',400);
+}
+
+let currentOrder = 1;
+document.getElementById('prevLetter').addEventListener('click',()=>{
+  if(currentOrder>1){currentOrder--;scrollToLetter(currentOrder)}
+});
+document.getElementById('nextLetter').addEventListener('click',()=>{
+  if(currentOrder<28){currentOrder++;scrollToLetter(currentOrder)}
+});
+
+render();
+startIdentify();
+</script>
+</body>
+</html>
